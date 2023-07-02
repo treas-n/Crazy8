@@ -49,9 +49,11 @@ public class Crazy8 {
             ArrayList<Integer> playableCards = new ArrayList<>();
             playableCards = players.get(currentPlayer).findSimilarCards(topCard);
 
-            if (players.get(currentPlayer).getHandSize() == 0) {
+            if (players.get(currentPlayer).getHandSize() == 1  && playableCards.size() == 1) {
                 gameEnd = true;
-                System.out.println("Player " + currentPlayer + " wins!");
+                Card lastCard = players.get(currentPlayer).playCard(playableCards.get(0));
+                pile.playCard(lastCard);
+                System.out.println("Player " + currentPlayer + " played " +lastCard.toString()+ " and won!");
                 break;
             }
 
@@ -69,23 +71,23 @@ public class Crazy8 {
                     switch(cardToPlay.getRank()) {
                         case EIGHT:
                             Card.Suit suit = players.get(currentPlayer).pickSuit();
+                            changeSuit(suit);
                             System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and changed suit to " + suit.toString());
                             pile.playCard(cardToPlay);
-                            changeSuit(suit);
                             break;
                         case TWO:
-                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and made player " +((currentPlayer+1) % players.size())+ " pick up 2 cards.");
                             pickUp2();
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and made player " +((currentPlayer+direction) % players.size())+ " pick up 2 cards.");
                             pile.playCard(cardToPlay);
                             break;
                         case JACK:
-                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and changed direction.");
                             changeDirection();
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and changed direction.");
                             pile.playCard(cardToPlay);
                             break;
                         case SEVEN:
-                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and skipped player " + ((currentPlayer+1) % players.size()) + ".");
                             skipNextPlayer();
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and skipped player " + ((currentPlayer+direction) % players.size()) + ".");
                             pile.playCard(cardToPlay);
                             break;
                     }
@@ -114,7 +116,7 @@ public class Crazy8 {
     }
 
     public void skipNextPlayer() {
-        currentPlayer++;
+        currentPlayer += direction;
     }
 
     public void changeSuit(Card.Suit suit) {
@@ -122,7 +124,7 @@ public class Crazy8 {
     }
 
     public static void main(String[] args) {
-        Crazy8 game = new Crazy8(2);
+        Crazy8 game = new Crazy8(4);
         game.startGame();
     }
 }

@@ -1,5 +1,4 @@
 package src;
-import java.util.Collections;
 import java.util.ArrayList;
 
 public class Crazy8 {
@@ -10,6 +9,7 @@ public class Crazy8 {
     private boolean gameEnd = false;
 
     public Crazy8(int numPlayers) {
+        players = new ArrayList<>();
         for(Integer i = 0; i < numPlayers; i++) {
             players.add(new Player(i.toString()));
         }
@@ -23,7 +23,7 @@ public class Crazy8 {
             }
         }
 
-        pile.playCard(pile.drawCard());
+        //pile.playCard(pile.drawCard());
 
         currentPlayer = 0;
     }
@@ -34,34 +34,72 @@ public class Crazy8 {
             if (currentPlayer >= players.size()) {
                 currentPlayer = 0;
             }
+
+            if (currentPlayer < 0) {
+                currentPlayer = players.size() - 1;
+            }
+
+            System.out.println("Player " + currentPlayer + "'s turn.");
+            players.get(currentPlayer).showCards();
             
             //get top card
             Card topCard = pile.topCard();
 
             //find playable cards
-            int[] playableCards = players.get(currentPlayer).findSimilarCards(topCard);
-
-            //if no playable cards, draw card
-            if (playableCards.length == 0) {
-                players.get(currentPlayer).drawCard(pile.drawCard());
-            }
-            else {
-                //generate random number between 0 and size of playableCards
-                int random = (int)(Math.random() * playableCards.length);
-
-                pile.playCard(players.get(currentPlayer).playCard(playableCards[random]));
-            }
-
-
-
-
-
-
-
+            ArrayList<Integer> playableCards = new ArrayList<>();
+            playableCards = players.get(currentPlayer).findSimilarCards(topCard);
 
             if (players.get(currentPlayer).getHandSize() == 0) {
                 gameEnd = true;
+                System.out.println("Player " + currentPlayer + " wins!");
+                break;
             }
+
+            //if no playable cards, draw card
+            if (playableCards.size() == 0) {
+                players.get(currentPlayer).drawCard(pile.drawCard());
+                System.out.println("Player " + currentPlayer + " drew a card.");
+            }
+            else {
+                //generate random number between 0 and size of playableCards
+                int random = (int)(Math.random() * playableCards.size());
+                Card cardToPlay = players.get(currentPlayer).playCard(playableCards.get(random));
+
+                if(cardToPlay.isSpecialCard()) {
+                    switch(cardToPlay.getRank()) {
+                        case EIGHT:
+                            Card.Suit suit = players.get(currentPlayer).pickSuit();
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and changed suit to " + suit.toString());
+                            pile.playCard(cardToPlay);
+                            changeSuit(suit);
+                            break;
+                        case TWO:
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and made player " +((currentPlayer+1) % players.size())+ " pick up 2 cards.");
+                            pickUp2();
+                            pile.playCard(cardToPlay);
+                            break;
+                        case JACK:
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and changed direction.");
+                            changeDirection();
+                            pile.playCard(cardToPlay);
+                            break;
+                        case SEVEN:
+                            System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and skipped player " + ((currentPlayer+1) % players.size()) + ".");
+                            skipNextPlayer();
+                            pile.playCard(cardToPlay);
+                            break;
+                    }
+                }
+                else {
+                    pile.playCard(cardToPlay);
+                    System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + ".");
+                }
+                
+            }
+
+
+            
+            System.out.println();
         }
     }
 
@@ -76,12 +114,15 @@ public class Crazy8 {
     }
 
     public void skipNextPlayer() {
-        currentPlayer += 2;
+        currentPlayer++;
     }
 
     public void changeSuit(Card.Suit suit) {
-        pile.playCard(new Card(suit, Card.Rank.EIGHT));
+        pile.changeSuit(suit);
     }
 
-
+    public static void main(String[] args) {
+        Crazy8 game = new Crazy8(2);
+        game.startGame();
+    }
 }

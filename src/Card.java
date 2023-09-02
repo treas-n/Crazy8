@@ -35,4 +35,12 @@ public class Card {
         }
         else return false;
     }
+
+    public String printCard() {
+        String card = "+----+\n|    |\n";
+        card += "| 8 " + '\u2660' + " |\n";
+        card += "|    |\n+----+";
+        
+        return card;
+    }
 }

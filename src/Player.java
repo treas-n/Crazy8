@@ -1,5 +1,7 @@
 package src;
-import java.util.ArrayList;
+import src.Card;
+import java.util.ArrayList; 
+
 
 public class Player {
     private String name;
@@ -20,7 +22,7 @@ public class Player {
     }
 
     public ArrayList<Integer> findSimilarCards(Card card) {
-        ArrayList similarCards = new ArrayList<Integer>();
+        ArrayList<Integer> similarCards = new ArrayList<Integer>();
         for (Card c : hand) {
             if (c.getSuit() == card.getSuit() || c.getRank() == card.getRank() || c.getRank() == Card.Rank.EIGHT) {
                 similarCards.add(hand.indexOf(c));

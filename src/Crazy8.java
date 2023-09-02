@@ -1,4 +1,6 @@
 package src;
+import src.Pile;
+import src.Player;
 import java.util.ArrayList;
 
 public class Crazy8 {
@@ -90,6 +92,8 @@ public class Crazy8 {
                             System.out.println("Player " + currentPlayer + " played " + cardToPlay.toString() + " and skipped player " + ((currentPlayer+direction) % players.size()) + ".");
                             pile.playCard(cardToPlay);
                             break;
+                        default:
+                            break;
                     }
                 }
                 else {
@@ -110,8 +114,21 @@ public class Crazy8 {
     }
 
     public void pickUp2() {
-        players.get(currentPlayer+1).drawCard(pile.drawCard());
-        players.get(currentPlayer+1).drawCard(pile.drawCard());
+        if(players.get(currentPlayer).equals(players.get(players.size()-1)) && direction == 1) {
+            players.get(0).drawCard(pile.drawCard());
+            players.get(0).drawCard(pile.drawCard());
+            skipNextPlayer();
+            return;
+        }
+        else if (players.get(currentPlayer).equals(players.get(0)) && direction == -1){
+            players.get(players.size()-1).drawCard(pile.drawCard());
+            players.get(players.size()-1).drawCard(pile.drawCard());
+            skipNextPlayer();
+            return;
+        }
+
+        players.get(currentPlayer+direction).drawCard(pile.drawCard());
+        players.get(currentPlayer+direction).drawCard(pile.drawCard());
         skipNextPlayer();
     }
 
@@ -125,6 +142,10 @@ public class Crazy8 {
 
     public static void main(String[] args) {
         Crazy8 game = new Crazy8(4);
+        Card card = new Card(Card.Suit.CLUBS, Card.Rank.EIGHT);
+        System.out.println(card.printCard());
+
+        
         game.startGame();
     }
 }

@@ -37,10 +37,30 @@ public class Card {
     }
 
     public String printCard() {
-        String card = "+----+\n|    |\n";
-        card += "| 8 " + '\u2660' + " |\n";
-        card += "|    |\n+----+";
+        String card = "+---------+\n|	  |\n|	  |\n";
+
+        card += "|    " + rank + "    |\n";
         
+        switch(suit) {
+            case CLUBS:
+                card += "|  CLUBS  |\n";
+                break;
+
+            case DIAMONDS:
+                card += "| DIAMONDS |\n";
+                break;
+
+            case HEARTS:
+                card += "| HEARTS  |\n";
+                break;
+
+            case SPADES:
+                card += "| SPADES  |\n";
+                break;
+        }
+
+        card = "|	  |\n|	  |\n+---------+\n";
+
         return card;
     }
 }

@@ -41,6 +41,14 @@ public class Crazy8 {
                 currentPlayer = players.size() - 1;
             }
 
+            //Display the table and number of cards each player has
+
+            /*for (Player player : players) {
+                for(int i = 0; i < player.getHandSize(); i++) {
+                    System.out.print("#");
+                }
+            } */
+
             System.out.println("Player " + currentPlayer + "'s turn.");
             players.get(currentPlayer).showCards();
             

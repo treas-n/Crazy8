@@ -39,7 +39,64 @@ public class Card {
     public String printCard() {
         String card = "+---------+\n|	  |\n|	  |\n";
 
-        card += "|    " + rank + "    |\n";
+        card += "|    ";
+
+        switch(rank) {
+            case ACE:
+                card += "A";
+                break;
+
+            case TWO:
+                card += "2";
+                break;
+
+            case THREE:
+                card += "3";
+                break;
+
+            case FOUR:
+                card += "4";
+                break;
+
+            case FIVE:
+                card += "5";
+                break;
+
+            case SIX:
+                card += "6";
+                break;
+            
+            case SEVEN:
+                card += "7";
+                break;
+            
+            case EIGHT:
+                card += "8";
+                break;
+            
+            case NINE:
+                card += "9";
+                break;
+            
+            case TEN:
+                card = card.substring(0, card.length()-1);
+                card += "10";
+                break;
+            
+            case JACK:
+                card += "J";
+                break;
+
+            case QUEEN:
+                card += "Q";
+                break;
+            
+            case KING:
+                card += "K";
+                break;
+        } 
+        
+        card += "    |\n";
         
         switch(suit) {
             case CLUBS:
@@ -47,7 +104,7 @@ public class Card {
                 break;
 
             case DIAMONDS:
-                card += "| DIAMONDS |\n";
+                card += "| DIAMOND |\n";
                 break;
 
             case HEARTS:
@@ -59,7 +116,7 @@ public class Card {
                 break;
         }
 
-        card = "|	  |\n|	  |\n+---------+\n";
+        card += "|	  |\n|	  |\n+---------+\n";
 
         return card;
     }

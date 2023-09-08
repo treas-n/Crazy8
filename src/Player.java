@@ -1,5 +1,4 @@
 package src;
-import src.Card;
 import java.util.ArrayList; 
 
 
@@ -31,14 +30,14 @@ public class Player {
         return similarCards;
     }
     
-    public void showCards() {
-        System.out.println("----------------------------------");
-        System.out.println("| Player " + name + "'s hand:");
+    public void playersHand() {
+        System.out.println("-----------------");
+        System.out.println("| Your hand:");
 
         for (Card card : hand) {
-            System.out.println("| " +card);
+            System.out.println("| " + card.toString());
         }
-        System.out.println("----------------------------------");
+        System.out.println("-----------------");
     }
 
     public Card.Suit pickSuit() {
